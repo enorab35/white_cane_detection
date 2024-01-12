@@ -29,11 +29,25 @@ def split_dataset(directory):
     ids_test = ids_rest[int(len(ids_rest)*split_ratio):]
     return ids_train, ids_val, ids_test
 
+def create_dir():
+        if not os.path.exists("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/training/"):
+            os.mkdir("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/training")
+            os.mkdir("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/training/images")
+            os.mkdir("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/training/labels")
+        if not os.path.exists("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/val/"):
+            os.mkdir("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/val")
+            os.mkdir("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/val/images")
+            os.mkdir("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/val/labels")
+        if not os.path.exists("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/test"):
+            os.mkdir("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/test")
+            os.mkdir("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/test/images")
+            os.mkdir("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/test/labels")
 def main():
     img_dir = "../images/"
     train, val, test = split_dataset(img_dir)
     print(len(train))
     print(len(val))
     print(len(test))
+    create_dir()
     
 main()
