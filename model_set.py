@@ -47,7 +47,7 @@ def create_dir():
 def create_data(directory, type_set, ids):
     lst_file = open(directory+"/"+type_set+".txt", "w")
     for img_id in ids:
-        lst_file.write(directory + "/images/"+img_id + ".jpg")
+        lst_file.write(directory + "/images/"+img_id + ".jpg"
         shutil.copy2( "dataset/images/"+img_id+".jpg", directory+"images/"+img_id+".jpg")
         shutil.copy2("dataset/labels/"+img_id+".txt", directory+"labels/"+img_id+".txt")
     lst_file.close()
@@ -62,7 +62,7 @@ def create_yaml(directory, type_set):
     file.write('names: ["white_canes_detection"]\n')
         
 def main():
-    img_dir = "../images/"
+    img_dir = "dataset/images/"
     train, val, test = split_dataset(img_dir)
     print(len(train))
     print(len(val))
