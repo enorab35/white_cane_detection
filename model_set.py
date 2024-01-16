@@ -6,7 +6,7 @@ Created on Fri Jan 12 09:38:37 2024
 """
 
 #import matplotlib.pyplot as plt
-import cv2
+#import cv2
 import os, random
 import shutil
 
@@ -49,6 +49,7 @@ def create_data(directory, type_set, ids):
     for img_id in ids:
         lst_file.write(f"{directory}/images/{img_id}.jpg")
         shutil.copy2( "../images/"+img_id+".jpg", directory+"images/"+img_id+".jpg")
+        shutil.copy2("../labels/"+img_id+".txt", directory+"labels/"+img_id+".txt")
     lst_file.close()
         
 def main():
