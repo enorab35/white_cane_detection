@@ -8,6 +8,7 @@ Created on Fri Jan 12 09:38:37 2024
 #import matplotlib.pyplot as plt
 import cv2
 import os, random
+import shutil
 
 """
 image = cv2.imread("dataset/images/IMG_0329_MOV-0_jpg.rf.3c0f000617844bcd26e3d652bc80547c.jpg", 1)
@@ -17,7 +18,7 @@ cv2.destroyAllWindows()
 """
 
 def split_dataset(directory):
-    ids_img= [file_name.split(".")[0] for file_name in os.listdir(directory)]
+    ids_img= [file_name.rsplit(".", 1)[0] for file_name in os.listdir(directory)]
     random.shuffle(ids_img)
     
     split_ratio = 0.6
@@ -42,6 +43,14 @@ def create_dir():
             os.mkdir("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/test")
             os.mkdir("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/test/images")
             os.mkdir("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/test/labels")
+
+def create_data(directory, type_set, ids):
+    lst_file = open(directory+"/"+type_set+".txt", "w")
+    for img_id in ids:
+        lst_file.write(f"{directory}/images/{img_id}.jpg")
+        shutil.copy2( "../images/"+img_id+".jpg", directory+"images/"+img_id+".jpg")
+    lst_file.close()
+        
 def main():
     img_dir = "../images/"
     train, val, test = split_dataset(img_dir)
@@ -49,5 +58,7 @@ def main():
     print(len(val))
     print(len(test))
     create_dir()
-    
+    create_data("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/training/", "train", train)
+    create_data("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/val/", "val", val)
+    create_data("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/test/", "test", test)
 main()
