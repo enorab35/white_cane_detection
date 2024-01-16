@@ -48,12 +48,12 @@ def create_data(directory, type_set, ids):
     lst_file = open(directory+"/"+type_set+".txt", "w")
     for img_id in ids:
         lst_file.write(f"{directory}/images/{img_id}.jpg")
-        shutil.copy2( "../images/"+img_id+".jpg", directory+"images/"+img_id+".jpg")
-        shutil.copy2("../labels/"+img_id+".txt", directory+"labels/"+img_id+".txt")
+        shutil.copy2( "dataset/images/"+img_id+".jpg", directory+"images/"+img_id+".jpg")
+        shutil.copy2("dataset/labels/"+img_id+".txt", directory+"labels/"+img_id+".txt")
     lst_file.close()
         
 def main():
-    img_dir = "../images/"
+    img_dir = "dataset/images/"
     train, val, test = split_dataset(img_dir)
     print(len(train))
     print(len(val))
