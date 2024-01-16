@@ -10,4 +10,5 @@ from ultralytics import YOLO
 model = YOLO("yolov8n.yaml")  # build a new model from scratch
 model = YOLO("yolov8n.pt")  # load a pretrained model (recommended for training)
 
-results = model.train(data='dataset.yaml', epochs=3)
+#results = model.train(data='training/dataset.yaml', epochs=3)
+model.train(data="coco128.yaml", epochs=3)

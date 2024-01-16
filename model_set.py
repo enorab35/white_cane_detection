@@ -35,41 +35,40 @@ def create_dir():
             os.mkdir("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/training")
             os.mkdir("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/training/images")
             os.mkdir("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/training/labels")
-        if not os.path.exists("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/val/"):
-            os.mkdir("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/val")
-            os.mkdir("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/val/images")
-            os.mkdir("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/val/labels")
         if not os.path.exists("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/test"):
             os.mkdir("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/test")
             os.mkdir("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/test/images")
             os.mkdir("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/test/labels")
 
 def create_data(directory, type_set, ids):
-    lst_file = open(directory+"/"+type_set+".txt", "w")
+    lst_file = open(directory+type_set+".txt", "w")
+    i=0
     for img_id in ids:
-        lst_file.write(directory + "/images/"+img_id + ".jpg"
-        shutil.copy2( "dataset/images/"+img_id+".jpg", directory+"images/"+img_id+".jpg")
-        shutil.copy2("dataset/labels/"+img_id+".txt", directory+"labels/"+img_id+".txt")
+        lst_file.write(directory + "images/"+type_set+str(i) + ".jpg\n")
+        shutil.copy2( "dataset/images/"+img_id+".jpg", directory+"images/"+type_set+str(i)+".jpg")
+        shutil.copy2("dataset/labels/"+img_id+".txt", directory+"labels/"+type_set+str(i)+".txt")
+        i+=1
     lst_file.close()
     
 def create_yaml(directory, type_set):
     # dataset.yaml
     file = open(directory + "dataset.yaml", 'w')
-    file.write('train:'+ directory + type_set + '.txt\n')
-    file.write('val:' + directory + type_set +'.txt\n')
+    file.write('train: train.txt\n')
+    file.write('val: val.txt\n')
     file.write('\n')
     file.write('nc: 1\n')
     file.write('names: ["white_canes_detection"]\n')
-        
+
 def main():
+    classes = ["0", "1"]
     img_dir = "dataset/images/"
     train, val, test = split_dataset(img_dir)
     print(len(train))
     print(len(val))
     print(len(test))
     create_dir()
-    create_data("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/training/", "train", train)
-    create_data("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/val/", "val", val)
-    create_data("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/test/", "test", test)
-    create_yaml("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/training/", "train")
+    create_data("training/", "train", train)
+    create_data("training/", "val", val)
+    create_data("test/", "test", test)
+    create_yaml("training/", "train")
 main()
