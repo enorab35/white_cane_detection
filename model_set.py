@@ -40,6 +40,7 @@ def create_dir():
             os.mkdir("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/test/images")
             os.mkdir("C:/Users/maelb/Documents/scolaire/M2/traitement d'images/seg_image/white_cane_detection/test/labels")
 
+
 def create_data(directory, type_set, ids):
     lst_file = open(directory+type_set+".txt", "w")
     i=0
@@ -49,8 +50,34 @@ def create_data(directory, type_set, ids):
         shutil.copy2("dataset/labels/"+img_id+".txt", directory+"labels/"+type_set+str(i)+".txt")
         i+=1
     lst_file.close()
-    
-def create_yaml(directory, type_set):
+
+
+def filtre_box(directory):
+    files = os.listdir(directory)
+    for file in files:
+        print(file)
+        lines = []
+        path = os.path.join(directory, file)
+        f = open(path, "r")
+        lines_f = f.readlines()
+        print(lines_f)
+        for line in lines_f:
+            valeurs = [valeur for valeur in line.strip().split()]
+            if len(valeurs) >=5:
+                valeurs = valeurs[:5]
+                print(len(valeurs))
+            lines.append(valeurs)
+        print(lines)
+        f.close()
+        f = open(path, "w")
+        for val in lines:
+            print(val)
+            val_up = ' '.join(map(str, val)) + '\n'
+            f.write(val_up)
+        f.close()
+
+
+def create_yaml(directory):
     # dataset.yaml
     file = open(directory + "dataset.yaml", 'w')
     file.write('train: train.txt\n')
@@ -59,16 +86,18 @@ def create_yaml(directory, type_set):
     file.write('nc: 1\n')
     file.write('names: ["white_canes_detection"]\n')
 
+
 def main():
     classes = ["0", "1"]
     img_dir = "dataset/images/"
-    train, val, test = split_dataset(img_dir)
-    print(len(train))
-    print(len(val))
-    print(len(test))
-    create_dir()
-    create_data("training/", "train", train)
-    create_data("training/", "val", val)
-    create_data("test/", "test", test)
-    create_yaml("training/", "train")
+    # train, val, test = split_dataset(img_dir)
+    # print(len(train))
+    # print(len(val))
+    # print(len(test))
+    # create_dir()
+    # create_data("training/", "train", train)
+    # create_data("training/", "val", val)
+    # create_data("test/", "test", test)
+    # filtre_box("training/labels")
+    create_yaml("training/")
 main()
