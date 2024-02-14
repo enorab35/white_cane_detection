@@ -11,6 +11,6 @@ model = YOLO("yolov8n.yaml")  # build a new model from scratch
 model = YOLO("yolov8n.pt")  # load a pretrained model (recommended for training)
 model = YOLO('yolov8n.yaml').load('yolov8n.pt')  # build from YAML and transfer weights
 
-results = model.train(data='training/dataset.yaml', epochs=40)
+results = model.train(data='training/dataset.yaml', epochs=100)
 model.load("runs/detect/train/weights/best.pt")
 results = model.val(data="test/dataset.yaml")
