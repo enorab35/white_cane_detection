@@ -63,14 +63,21 @@ def filtre_box(directory):
         f.close()
 
 
-def create_yaml(directory):
+def create_yaml():
     # dataset.yaml
-    file = open(directory + "dataset.yaml", 'w')
+    file = open("training/dataset.yaml", 'w')
     file.write('train: train.txt\n')
     file.write('val: val.txt\n')
     file.write('\n')
     file.write('nc: 2\n')
-    file.write('names: ["white_canes", "umbrella"]\n')
+    file.write('names: ["umbrella", "white_canes"]\n')
+    file.close()
+    file = open("test/dataset.yaml", "w")
+    file.write('train: train.txt\n')
+    file.write('val: test.txt\n')
+    file.write('\n')
+    file.write('nc: 2\n')
+    file.write('names: ["umbrella", "white_canes"]\n')
     file.close()
 
 
@@ -86,5 +93,5 @@ def main():
     create_data("training/", "val", val)
     create_data("test/", "test", test)
     filtre_box("training/labels")
-    create_yaml("training/")
+    create_yaml()
 main()
