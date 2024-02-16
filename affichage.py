@@ -25,6 +25,6 @@ def disp_test(directory, num):
         plt.title(file)
         plt.imshow(plt.imread(directory+num+"/"+file))
     plt.show()
-disp_train("runs/detect/train", "8")
-disp_test("runs/detect/val", "4")
+disp_train("runs/detect/train", "")
+disp_test("runs/detect/val", "")
 
