@@ -61,21 +61,17 @@ def main():
     selected_class = [0,67]
     
     tracker = {} # to track person with the coord of the bounding boxes
-    canes = {} # to track white canes with coord of bounding boxes
-    free = {} # to keep the person without canes
     
     while True:
         ret, frame = cap.read()
 
         result=model.track(frame, persist=True) # persist to keep the track from a frame to the next one
-        print(result)
+        # print(result)
         # Visualize the results on the frame
         annotated_frame = result[0].plot()
         detections = result[0].boxes # type Boxes object
 
         tracker = {id: tracker[id] for id in tracker.keys() if id in detections.id.tolist()} # delete the object not in the frame anymore
-        canes = {id: canes[id] for id in canes.keys() if id in detections.id.tolist()} # delete the object not in the frame anymore
-        free = {id: free[id] for id in free.keys() if id in detections.id.tolist()}
         
         # pprint(tracker)
 
@@ -83,28 +79,17 @@ def main():
             classe=detections.cls[i].item() # get the correspondant class
             x1,y1,x2,y2 = detections.xyxy[i] # get the corr coord
 
-            if classe == 67:#for a phone detection ( change that to class_id of  white cane)
-                canes[detections.id[i].item()] = x1,y1,x2,y2 # add or update the dict
+            if classe == 0: # if is a human           
 
-            if classe == 0: # if is a human
-                if detections.id[i].item() not in tracker.keys():
-                    free[detections.id[i].item()] = x1,y1,x2,y2 # store the new coord
-            
-        for key, value in canes.item():
-            if key not in [v[2] for v in tracker.values()]:
-                holder = get_holder([key,value], free)
-                tracker[holder[0]] = [holder[1], key]
-            
-
-                # if detections.id[i].item() in list(tracker.keys()): # the detection is already known so stored in tracker
-                #     oldx1, oldy1, oldx2, oldy2 = tracker[detections.id[i].item()] # get the stored coord to compare
-                #     # we compare the difference with 15 so we can see the diff if the person is moving slowly 
-                #     # (maybe the case for a blind person looking for a door)
-                #     if ((x2-x1)-(oldx2-oldx1)) > 15: # the difference is positive and big enough so the person is getting closer
-                #         print(f"{detections.id[i].item()} s'approche")
-                #     elif ((x2-x1)-(oldx2-oldx1)) < -15: # the difference is negative and big enough so the person is stepping back
-                #         print(f"{detections.id[i].item()} se recule")
-                # tracker[detections.id[i].item()] = x1,y1,x2,y2 # store the new coord
+                if detections.id[i].item() in list(tracker.keys()): # the detection is already known so stored in tracker
+                    oldx1, oldy1, oldx2, oldy2 = tracker[detections.id[i].item()] # get the stored coord to compare
+                    # we compare the difference with 15 so we can see the diff if the person is moving slowly 
+                    # (maybe the case for a blind person looking for a door)
+                    if ((x2-x1)-(oldx2-oldx1)) > 15 and ((y2-y1)-(oldy2-oldy1)) > 15: # the difference is positive and big enough so the person is getting closer
+                        print(f"{detections.id[i].item()} s'approche")
+                    elif ((x2-x1)-(oldx2-oldx1)) < -15 and ((y2-y1)-(oldy2-oldy1)) < -15: # the difference is negative and big enough so the person is stepping back
+                        print(f"{detections.id[i].item()} se recule")
+                tracker[detections.id[i].item()] = x1,y1,x2,y2 # store the new coord
             
         # Display the annotated frame
         cv2.imshow("YOLOv8 Tracking", annotated_frame)
