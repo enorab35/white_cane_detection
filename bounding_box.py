@@ -49,6 +49,8 @@ def play_sound(file_path):
     pygame.mixer.init()
     sound = pygame.mixer.Sound(file_path)
     sound.play()
+    pygame.time.wait(int(500))
+    pygame.mixer.fadeout(0)
 
 def main():
     # load the sound
@@ -101,7 +103,7 @@ def main():
                         # (maybe the case for a blind person looking for a door)
                         if ((x2-x1)-(oldx2-oldx1)) > 5 or ((y2-y1)-(oldy2-oldy1)) > 5: # the difference is positive and big enough so the person is getting closer
                             print(f"########## {detections.id[i].item()} s'approche")
-                            play_sound("beep_uncut.mp3")
+                            play_sound("son_cut.mp3")
                         elif ((x2-x1)-(oldx2-oldx1)) < -5 or ((y2-y1)-(oldy2-oldy1)) < -5: # the difference is negative and big enough so the person is stepping back
                             print(f"{detections.id[i].item()} se recule")
                     tracker[detections.id[i].item()] = x1,y1,x2,y2 # store the new coord
